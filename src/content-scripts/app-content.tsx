@@ -1,71 +1,85 @@
-import { Button } from "@mui/material";
+import { Box, Button, ButtonProps } from "@mui/material";
 import * as React from "react";
+import { PopoverContent } from "../component";
 import "./index.css";
-
-interface IButtonImg {
-  event: MouseEvent;
-}
-const ButtonImg = ({ event }: IButtonImg) => {
-  const floatingButtonRef = React.useRef<HTMLButtonElement>(null);
-
-  React.useEffect(() => {
-    const handleMouseDown = (e: MouseEvent) => {
-      if (
-        floatingButtonRef.current &&
-        e.target instanceof Node &&
-        !floatingButtonRef.current.contains(e.target)
-      ) {
-        floatingButtonRef.current.remove();
-      }
-    };
-
-    document.addEventListener("mousedown", handleMouseDown);
-
-    return () => {
-      document.removeEventListener("mousedown", handleMouseDown);
-    };
-  }, []);
-
-  return (
-    <Button
-      ref={floatingButtonRef}
-      style={{
-        position: "absolute",
-        borderRadius: "50%",
-        padding: "none",
-        zIndex: "90",
-        left: `${event.clientX + window.scrollX}px`,
-        top: `${event.clientY + window.scrollY}px`,
-      }}
-    >
-      Hello
-    </Button>
-  );
-};
 
 function AppContent() {
   const [selectText, setSelectText] = React.useState("");
   const [eventButton, setEventButton] = React.useState<MouseEvent>();
+  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const [showButton, setShowButton] = React.useState(false);
+
+  const [isShowPopover, setIsShowPopover] = React.useState(false);
+
+  const handleMouseUp = (event: MouseEvent) => {
+    const selectedText = window.getSelection()?.toString() ?? "";
+
+    if (!selectedText) return;
+
+    setSelectText(selectedText);
+    setEventButton(event);
+    setShowButton(true);
+  };
+
+  const handleDocumentClick = (event: MouseEvent) => {
+    if (
+      buttonRef.current &&
+      event.target instanceof Node &&
+      !buttonRef.current.contains(event.target)
+    ) {
+      setShowButton(false);
+    }
+  };
+
+  const handleClickButton = () => {
+    setIsShowPopover(true);
+  };
 
   React.useEffect(() => {
-    const handleMouseUp = async (event: MouseEvent) => {
-      const selectedText = window.getSelection()?.toString() ?? "";
-
-      if (!selectedText) return;
-
-      setSelectText(selectedText);
-
-      setEventButton(event);
-    };
-
     document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mousedown", handleDocumentClick);
 
     return () => {
       document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mousedown", handleDocumentClick);
     };
-  }, [selectText]);
+  }, []);
 
-  return eventButton ? <ButtonImg event={eventButton} /> : null;
+  return (
+    <>
+      {selectText && eventButton && showButton && (
+        <Button
+          variant="outlined"
+          style={{
+            position: "absolute",
+            borderRadius: "50%",
+            zIndex: "90",
+            left: `${eventButton.clientX + window.scrollX}px`,
+            top: `${eventButton.clientY + window.scrollY}px`,
+          }}
+          ref={buttonRef}
+          sx={{
+            minWidth: ".1rem",
+            width: "2.1rem",
+            padding: ".1rem",
+          }}
+          onClick={handleClickButton}
+        >
+          <img
+            width={"100%"}
+            height="100%"
+            src="https://i.postimg.cc/gjNmTL1C/logo-icon.png"
+          />
+        </Button>
+      )}
+      {isShowPopover && eventButton && (
+        <PopoverContent
+          eventButton={eventButton}
+          setShowButton={setIsShowPopover}
+        />
+      )}
+    </>
+  );
 }
 
 export default AppContent;
