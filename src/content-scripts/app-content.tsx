@@ -1,6 +1,10 @@
-import { Box, Button, ButtonProps } from "@mui/material";
+import { Button } from "@mui/material";
 import * as React from "react";
 import { PopoverContent } from "../component";
+import {
+  setSelectedText,
+  setTextResult,
+} from "../store/valtio/store-response-valtio";
 import "./index.css";
 
 function AppContent() {
@@ -33,6 +37,8 @@ function AppContent() {
 
   const handleClickButton = () => {
     setIsShowPopover(true);
+    setSelectedText(selectText);
+    setTextResult();
   };
 
   React.useEffect(() => {
