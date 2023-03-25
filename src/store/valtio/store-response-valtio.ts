@@ -1,8 +1,8 @@
-import { proxy } from "valtio";
+import { proxy } from 'valtio';
 
-import { eventSourceOpenAi } from "../../service";
+import { eventSourceOpenAi } from '../../service';
 
-type language = "spanish" | "english";
+type language = 'spanish' | 'english';
 
 interface IStateStore {
   selectedText: string;
@@ -12,9 +12,9 @@ interface IStateStore {
 }
 
 export const storeOpenai = proxy<IStateStore>({
-  selectedText: "",
-  language: "spanish",
-  textResult: "",
+  selectedText: '',
+  language: 'spanish',
+  textResult: '',
   streaming: false,
 });
 
@@ -22,7 +22,7 @@ export const handleChangeLanguage = (
   event: React.ChangeEvent<HTMLSelectElement>
 ) => {
   storeOpenai.language = event.target.value as language;
-  setTextResult();
+  void setTextResult();
 };
 
 export const setSelectedText = (selectedText: string) => {
@@ -36,10 +36,10 @@ export const setTextResult = async () => {
     storeOpenai.selectedText,
     storeOpenai.language
   );
-  let message = "";
+  let message = '';
 
   eventSource.onerror = (error) => {
-    console.error("Event source Onerror:", error);
+    console.error('Event source Onerror:', error);
     eventSource.close();
     storeOpenai.streaming = false;
   };
@@ -47,13 +47,13 @@ export const setTextResult = async () => {
   eventSource.onmessage = (event) => {
     const { data } = event;
     console.log(data);
-    if (data === "[DONE]") {
+    if (data === '[DONE]') {
       storeOpenai.streaming = false;
 
       eventSource.close();
       return;
     }
-    message += JSON.parse(data);
+    message += JSON.parse(data) as string;
     storeOpenai.textResult = message;
   };
 };

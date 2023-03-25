@@ -1,12 +1,12 @@
-import { Box, Stack, Typography } from "@mui/material";
-import interact from "interactjs";
-import * as React from "react";
-import { useSnapshot } from "valtio";
+import { Box, Stack, Typography } from '@mui/material';
+import interact from 'interactjs';
+import * as React from 'react';
+import { useSnapshot } from 'valtio';
 import {
   handleChangeLanguage,
   storeOpenai,
-} from "../store/valtio/store-response-valtio";
-import { Loading } from "./loading";
+} from '../store/valtio/store-response-valtio';
+import { Loading } from './loading';
 
 interface IPropsPopover {
   eventButton: MouseEvent;
@@ -18,13 +18,12 @@ const PopoverContent: React.FC<IPropsPopover> = ({
   setShowButton,
 }) => {
   const popoverRef = React.useRef<HTMLElement>(null);
-  //   const [language, setLanguage] = React.useState("");
 
   const { textResult, streaming } = useSnapshot(storeOpenai);
 
   const handleDocumentPopoverClick = (event: MouseEvent) => {
     if (
-      popoverRef.current &&
+      popoverRef.current != null &&
       event.target instanceof Node &&
       !popoverRef.current.contains(event.target)
     ) {
@@ -33,17 +32,17 @@ const PopoverContent: React.FC<IPropsPopover> = ({
   };
 
   React.useEffect(() => {
-    document.addEventListener("mousedown", handleDocumentPopoverClick);
+    document.addEventListener('mousedown', handleDocumentPopoverClick);
 
     const position = { x: 0, y: 0 };
-    interact(".draggable").draggable({
+    interact('.draggable').draggable({
       listeners: {
         start(event) {
           console.log(event.type, event.target);
         },
         move(event) {
-          position.x += event.dx;
-          position.y += event.dy;
+          position.x += Number(event.dx);
+          position.y += Number(event.dy);
 
           event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
         },
@@ -51,7 +50,7 @@ const PopoverContent: React.FC<IPropsPopover> = ({
     });
 
     return () => {
-      document.removeEventListener("mousedown", handleDocumentPopoverClick);
+      document.removeEventListener('mousedown', handleDocumentPopoverClick);
     };
   }, []);
 
@@ -60,53 +59,70 @@ const PopoverContent: React.FC<IPropsPopover> = ({
       className="draggable"
       ref={popoverRef}
       style={{
-        position: "absolute",
-        zIndex: "100",
+        position: 'absolute',
+        zIndex: '100',
         left: `${eventButton.clientX + window.scrollX}px`,
         top: `${eventButton.clientY + window.scrollY}px`,
       }}
       sx={{
-        width: "25rem",
-        bgcolor: "black",
-        padding: ".5rem",
-        borderRadius: "1rem",
+        width: '25rem',
+        bgcolor: 'black',
+        padding: '.5rem',
+        borderRadius: '1rem',
         border: 1,
-        borderColor: "#333333",
+        borderColor: '#333333',
       }}
     >
       <Stack
         sx={{
-          paddingX: ".75rem",
-          paddingY: ".65rem",
-          bgcolor: "#171717",
-          borderRadius: ".75rem",
+          paddingX: '.75rem',
+          paddingY: '.65rem',
+          bgcolor: '#171717',
+          borderRadius: '.75rem',
           border: 1,
-          borderColor: "#2E2E2E",
+          borderColor: '#2E2E2E',
         }}
         spacing=".5rem"
       >
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography
             variant="h6"
-            sx={{ fontWeight: "bold", fontSize: ".85rem" }}
+            sx={{ fontWeight: 'bold', fontSize: '.95rem' }}
           >
             Code Xplain
           </Typography>
-          <select onChange={handleChangeLanguage}>
-            <option value={"spanish"}>Spanish</option>
-            <option value={"english"}>English</option>
+          <select
+            onChange={handleChangeLanguage}
+            style={{
+              borderRadius: '.5rem',
+              border: 'none',
+              background: '#1D1D1D',
+              padding: '.2rem .4rem .2rem .4rem',
+              fontSize: '.85rem',
+              fontWeight: 'normal',
+            }}
+          >
+            <option value={'spanish'}>
+              <Typography variant="body2">Spanish</Typography>
+            </option>
+            <option value={'english'}>
+              <Typography variant="body2">English</Typography>
+            </option>
           </select>
         </Box>
         <Box
           sx={{
-            bgcolor: "#1D1D1D",
-            borderRadius: ".65rem",
-            padding: ".65rem",
-            fontSize: ".85rem",
-            fontWeight: "normal",
+            bgcolor: '#1D1D1D',
+            borderRadius: '.65rem',
+            padding: '.65rem',
           }}
         >
-          {streaming ? <Loading /> : textResult}
+          <Typography
+            variant="body2"
+            sx={{ lineHeight: '1.8', fontSize: '.9rem', fontWeight: 'normal' }}
+          >
+            {streaming ? <Loading /> : textResult}
+          </Typography>
         </Box>
       </Stack>
     </Box>
