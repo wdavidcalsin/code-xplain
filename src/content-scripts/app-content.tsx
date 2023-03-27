@@ -66,9 +66,9 @@ function AppContent() {
           }}
           ref={buttonRef}
           sx={{
-            minWidth: '.1rem',
+            minWidth: '1.6px',
             width: '40px',
-            padding: '.1rem',
+            padding: '1.6px',
           }}
           onClick={handleClickButton}
         >

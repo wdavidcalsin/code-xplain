@@ -67,38 +67,38 @@ const PopoverContent: React.FC<IPropsPopover> = ({
       sx={{
         width: '460px',
         bgcolor: 'black',
-        padding: '.5rem',
-        borderRadius: '1rem',
+        padding: '8px',
+        borderRadius: '16px',
         border: 1,
         borderColor: '#333333',
       }}
     >
       <Stack
         sx={{
-          paddingX: '.75rem',
-          paddingY: '.65rem',
+          paddingX: '12px',
+          paddingY: '10.4px',
           bgcolor: '#171717',
-          borderRadius: '.75rem',
+          borderRadius: '12px',
           border: 1,
           borderColor: '#2E2E2E',
         }}
-        spacing=".5rem"
+        spacing="8px"
       >
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography
             variant="h6"
-            sx={{ fontWeight: 'bold', fontSize: '.95rem' }}
+            sx={{ fontWeight: 'bold', fontSize: '15.2px' }}
           >
             Code Xplain
           </Typography>
           <select
             onChange={handleChangeLanguage}
             style={{
-              borderRadius: '.5rem',
+              borderRadius: '8px',
               border: 'none',
               background: '#1D1D1D',
-              padding: '.2rem .4rem .2rem .4rem',
-              fontSize: '.85rem',
+              padding: '3.2px 6.4px 3.2px 6.4px',
+              fontSize: '13.6px',
               fontWeight: 'normal',
             }}
           >
@@ -113,13 +113,13 @@ const PopoverContent: React.FC<IPropsPopover> = ({
         <Box
           sx={{
             bgcolor: '#1D1D1D',
-            borderRadius: '.65rem',
-            padding: '.65rem',
+            borderRadius: '10.4px',
+            padding: '10.4px',
           }}
         >
           <Typography
             variant="body2"
-            sx={{ lineHeight: '1.8', fontSize: '.9rem', fontWeight: 'normal' }}
+            sx={{ lineHeight: '1.8', fontSize: '14.4px', fontWeight: 'normal' }}
           >
             {streaming ? <Loading /> : textResult}
           </Typography>
