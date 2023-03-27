@@ -65,7 +65,7 @@ const PopoverContent: React.FC<IPropsPopover> = ({
         top: `${eventButton.clientY + window.scrollY}px`,
       }}
       sx={{
-        width: '25rem',
+        width: '450px',
         bgcolor: 'black',
         padding: '.5rem',
         borderRadius: '1rem',
