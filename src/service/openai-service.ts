@@ -3,7 +3,7 @@ export const eventSourceOpenAi = (
   language: string = 'spanish'
 ) => {
   // Enter Openai Api Url
-  const API_URL = 'https://code-xplain-server.vercel.app/api/openai';
+  const API_URL = '';
 
   const url = `${API_URL}/?prompt=${JSON.stringify(text)}&language=${language}`;
 
